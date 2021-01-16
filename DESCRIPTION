@@ -1,0 +1,26 @@
+Package: secretscrape
+Title: Scrape opensecrets.org For Congressional Political Donation Data
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Harrison",
+           family = "Karp",
+           role = c("aut", "cre"),
+           email = "hkarp@wesleyan.edu")
+Description: This package can be used to obtain data on industry specific political donations to Congress from opensecrets.org. This data is available at the individual Congressional candidate level from 1990-2020. For example, using this package allows you to obtain the agriculutural industry's donations to House and Senate candidates in 2010. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Date: 2021-01-16
+BugReports: https://github.com/username/secretscrape/isssues
+Imports: 
+    dplyr,
+    stringr,
+    rvest,
+    xml2,
+    rlist
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
