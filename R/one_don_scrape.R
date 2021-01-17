@@ -11,7 +11,7 @@ one_don_scrape <-function(ind, year, chamber, member) {
   }, error = function(e) {
     0
   })
-  closeAllConnections()
+  #closeAllConnections()
   if (pg_m == 0) {
     return(data.frame(Candidate = NA, Amount = NA, year = year,
                       chamber = chamber))
@@ -22,7 +22,7 @@ one_don_scrape <-function(ind, year, chamber, member) {
                          ".datadisplay"))[[1]]}))
   acc$year <- year
   acc$chamber <- chamber
-  closeAllConnections()
+  #closeAllConnections()
   return(acc)
 }
 

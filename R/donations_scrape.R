@@ -1,19 +1,19 @@
 #' @title donations_scrape
-#' @description scrapes OpenSecrets political campaign contribution data. This function collects donations by specific industries to congresspeople and congressional candidates 
+#' @description scrapes OpenSecrets political campaign contribution data. This function collects donations by specific industries to congresspeople and congressional candidates
 #' @param inds vector of industries in string format to scrape donations from
 #' @param years vector of election years in string format identifying the elections to scrape data from
 #' @param chambers vector of chambers of Congress in string format to scrape donations to, Default: c("H", "S")
 #' @param member either "Y" or "N", include only donations to members of Congress or donations to members and failed candidate, Default: 'Y'
 #' @return outputs a dataframe containing contribution data including candidate information, the amount donated, the chamber of congress, the election year, and the donating industry
 #' @details very large requests will result in overtaxing the OpenSecrets servers and causing a HTTP 429 error, wait and rerun smaller requests when this error occurs
-#' @examples 
+#' @examples
 #' \dontrun{
 #' if(interactive()){
-#'  donations_scrape("", "2004", "H", "N")
+#'  donations_scrape("E01", "2004", "H", "N")
 #'  }
 #' }
 #' @rdname donations_scrape
-#' @export 
+#' @export
 
 donations_scrape <- function(inds, years, chambers = c("H", "S"), member = "Y") {
   valid_inds = c("G2100", "G2400", "G2300", "A1200", "A1400",
@@ -35,7 +35,7 @@ donations_scrape <- function(inds, years, chambers = c("H", "S"), member = "Y") 
                  "P04", "P03", "W03", "W05", "W04", "W02", "W06", "Q14",
                  "Q15", "Q16", "Q02", "Q11", "Q04", "Q12", "Q13", "Q09",
                  "Q03", "Q05", "Q01", "A06", "A05", "A02")
-  
+
   ind_info = c("Food and kindred products manufacturing",
                "Food stores", "Meat processing & products",
                "Sugar cane & sugar beets", "Vegetables, fruits and tree nut",
@@ -95,7 +95,7 @@ donations_scrape <- function(inds, years, chambers = c("H", "S"), member = "Y") 
                "Textiles", "Building Trade Unions",
                "Industrial Unions", "Misc Unions",
                "Public Sector Unions", "Transportation Unions",
-               "Civil Servants/Public Officials", 
+               "Civil Servants/Public Officials",
                "Clergy & Religious Organizations",
                "Education", "Non-Profit Institutions",
                "Retired", "Abortion Policy/Anti-Abortion",
@@ -108,27 +108,27 @@ donations_scrape <- function(inds, years, chambers = c("H", "S"), member = "Y") 
                "Republican/Conservative", "Livestock",
                "Poultry & Eggs", "Tobacco")
   ind_df = data.frame(ids = valid_inds, inds = ind_info)
-  
+
   valid_years = as.character(seq(from =  1990, to = 2020, by = 2))
   valid_chambers = c("H", "S")
-  
+
   if (sum(inds %in% valid_inds) != length(inds)) {
     stop("invalid industry code entry")
   }
-  
+
   if (sum(years %in% valid_years) != length(years)) {
     stop("invalid year entry")
   }
-  
+
   if (sum(chambers %in% valid_chambers) != length(chambers)) {
     stop("invalid chamber entry")
   }
-  
+
   if (!(member == "Y" | member == "N")) {
     stop("invalid membership entry")
   }
-  
+
   acc = rlist::list.rbind(lapply(chambers, function(x) {many_don_scrapes(inds, years, x, member)}))
-  return(dplyr::left_join(acc, ind_df, by = c("ind" = "ids")))
+  return(dplyr::left_join(acc, ind_df, by = c("ind" = "ids"))[-5])
 }
 
